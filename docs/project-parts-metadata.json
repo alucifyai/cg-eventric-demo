@@ -1,0 +1,69 @@
+{
+  "repository_type": "multi-part",
+  "parts_count": 2,
+  "project_name": "eventric_demo",
+  "parts": [
+    {
+      "part_id": "client",
+      "display_name": "Client (Web Frontend)",
+      "project_type_id": "web",
+      "root_path": "/Users/chrismacomber/Code/eventric_demo/client",
+      "relative_path": "client/",
+      "primary_language": "TypeScript",
+      "primary_framework": "React 18",
+      "build_tool": "Vite",
+      "description": "React SPA frontend with Radix UI components and TailwindCSS styling",
+      "key_directories": [
+        "pages/",
+        "components/",
+        "hooks/",
+        "lib/"
+      ],
+      "entry_points": [
+        "App.tsx",
+        "pages/Index.tsx"
+      ],
+      "documentation_requirements": {
+        "requires_api_scan": true,
+        "requires_data_models": false,
+        "requires_state_management": true,
+        "requires_ui_components": true,
+        "requires_deployment_config": true
+      }
+    },
+    {
+      "part_id": "server",
+      "display_name": "Server (Backend API)",
+      "project_type_id": "backend",
+      "root_path": "/Users/chrismacomber/Code/eventric_demo/server",
+      "relative_path": "server/",
+      "primary_language": "TypeScript",
+      "primary_framework": "Express 5",
+      "build_tool": "Vite",
+      "description": "Express REST API backend with TypeScript",
+      "key_directories": [
+        "routes/"
+      ],
+      "entry_points": [
+        "index.ts",
+        "node-build.ts"
+      ],
+      "documentation_requirements": {
+        "requires_api_scan": true,
+        "requires_data_models": true,
+        "requires_state_management": false,
+        "requires_ui_components": false,
+        "requires_deployment_config": true
+      }
+    }
+  ],
+  "shared_resources": {
+    "path": "shared/",
+    "description": "TypeScript types and interfaces shared between client and server",
+    "key_files": [
+      "api.ts"
+    ]
+  },
+  "integration_type": "REST API",
+  "build_architecture": "Dual Vite configuration (client SPA + server bundle)"
+}
