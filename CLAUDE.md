@@ -147,3 +147,69 @@ Client-side variables must be prefixed with `VITE_PUBLIC_`.
 ## Package Manager
 
 Always use **pnpm** (version 10.14.0+). The project is configured with pnpm as the package manager.
+
+## BMAD Workflows & AppGraph
+
+This project uses the **BMAD (BMad Method)** framework and **AppGraph** for structured development workflows and application architecture modeling.
+
+### AppGraph
+
+The `.alucify/` directory contains AppGraph JSON files that model the complete application structure:
+
+- **AppGraph_eventric_demo.json** - Complete application graph with 26 nodes and 68 edges
+- **Interface/Logic/Schema Subgraphs** - Layer-specific views of the architecture
+- **Node types**: interface (UI components), schema (data models), logic (business logic)
+- **Edge types**: navigation, composition, relationship, manages, views, dependency, triggers, event
+
+AppGraph provides a structured representation of:
+- UI component hierarchy and relationships
+- Data models and their connections
+- Business logic flow and dependencies
+- Cross-layer relationships (Interface ↔ Logic ↔ Schema)
+
+Use AppGraph files when:
+- Planning new features to understand impact across layers
+- Refactoring to visualize dependencies
+- Onboarding to understand system architecture
+- Documenting architectural decisions
+
+### BMAD Workflows
+
+Available workflows are accessible via slash commands:
+
+**Development Workflows:**
+- `/bmad:bmm:workflows:prd` - Create Product Requirements Document
+- `/bmad:bmm:workflows:architecture` - Architecture decision facilitation
+- `/bmad:bmm:workflows:create-epics-and-stories` - Transform PRD into stories
+- `/bmad:bmm:workflows:create-story` - Generate next user story
+- `/bmad:bmm:workflows:dev-story` - Execute story implementation
+- `/bmad:bmm:workflows:code-review` - Perform code review on completed story
+
+**Planning & Research:**
+- `/bmad:bmm:workflows:workflow-init` - Initialize new BMM project
+- `/bmad:bmm:workflows:workflow-status` - Check current workflow status
+- `/bmad:bmm:workflows:research` - Adaptive research workflow
+- `/bmad:bmm:workflows:brainstorm-project` - Project brainstorming sessions
+
+**Documentation:**
+- `/bmad:bmm:workflows:document-project` - Generate comprehensive project documentation (generated the `docs/` directory)
+
+**Agents:**
+- `/bmad:bmm:agents:pm` - Product Manager agent
+- `/bmad:bmm:agents:architect` - Architect agent
+- `/bmad:bmm:agents:dev` - Developer agent
+- `/bmad:bmm:agents:tech-writer` - Technical Writer agent
+
+### Project Documentation
+
+The `docs/` directory contains comprehensive generated documentation:
+
+- **index.md** - Complete documentation navigation and overview
+- **development-guide.md** - Developer onboarding and common tasks
+- **architecture-patterns.md** - Design patterns and architectural decisions
+- **technology-stack.md** - Complete tech stack catalog
+- **ui-component-inventory-client.md** - All 53 UI components
+- **state-management-client.md** - State management strategy
+- **api-contracts-client.md** / **api-contracts-server.md** - API documentation
+
+Regenerate documentation when making major architectural changes using `/bmad:bmm:workflows:document-project`.
