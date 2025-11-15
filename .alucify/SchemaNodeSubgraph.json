@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generated_at": "2025-11-14",
+    "description": "Schema Node Subgraph for Eventric Tour Management Demo UI - GraphQL type definitions and entity relationships extracted from the codebase",
+    "total_nodes": 5,
+    "total_edges": 5,
+    "graphql_version": "GraphQL 2021 Specification"
+  },
+  "nodes": [
+    {
+      "id": "ns00001",
+      "type": "schema",
+      "name": "Tour",
+      "description": "Represents concert tour creation data captured in the tour wizard. Contains form fields for tour name, date range, and rider document upload. Note: This entity reflects component-local state from Index.tsx, not a persisted data model.",
+      "path": "DEMO UI/client/pages/Index.tsx",
+      "graphql_schema_physical": "type Tour {\n  \"Name of the concert tour\"\n  tourName: String!\n  \n  \"Start date of the tour\"\n  startDate: String!\n  \n  \"End date of the tour\"\n  endDate: String!\n  \n  \"Name of the uploaded rider document file\"\n  riderFileName: String\n  \n  \"Upload status flag indicating if rider document is currently being uploaded\"\n  isUploading: Boolean!\n  \n  \"Upload progress percentage (0-100) for the rider document\"\n  uploadProgress: Int!\n}"
+    },
+    {
+      "id": "ns00002",
+      "type": "schema",
+      "name": "Venue",
+      "description": "Represents an event venue with location details and compliance scoring against tour rider requirements. Venues are evaluated for their ability to meet technical and hospitality requirements.",
+      "path": "DEMO UI/client/pages/TourReview.tsx",
+      "graphql_schema_physical": "type Venue {\n  \"Unique identifier for the venue\"\n  id: ID!\n  \n  \"Name of the venue\"\n  name: String!\n  \n  \"Location of the venue (city, state/province format)\"\n  location: String!\n  \n  \"Street address of the venue\"\n  address: String\n  \n  \"Scheduled date for the event at this venue\"\n  date: String!\n  \n  \"Compliance score (0-100) indicating how well the venue meets rider requirements\"\n  compliance: Int!\n  \n  \"Breakdown of compliance items by severity level\"\n  badges: ComplianceBadge!\n  \n  \"Type of day: show, off, or travel\"\n  dayType: DayType\n  \n  \"City where the venue is located\"\n  city: String\n  \n  \"State or province where the venue is located\"\n  state: String\n  \n  \"ZIP or postal code for the venue\"\n  zipCode: String\n  \n  \"Country where the venue is located\"\n  country: String\n}\n\nenum DayType {\n  \"Performance day at the venue\"\n  SHOW\n  \n  \"Day off with no scheduled performance\"\n  OFF\n  \n  \"Travel day between venues\"\n  TRAVEL\n}"
+    },
+    {
+      "id": "ns00003",
+      "type": "schema",
+      "name": "ComplianceBadge",
+      "description": "Represents the categorized breakdown of compliance items for a venue, grouped by severity: red (critical issues), yellow (moderate concerns), green (compliant items).",
+      "path": "DEMO UI/client/pages/TourReview.tsx",
+      "graphql_schema_physical": "type ComplianceBadge {\n  \"Number of critical non-compliance items (compliance score < 40)\"\n  red: Int!\n  \n  \"Number of moderate compliance concerns (compliance score 40-79)\"\n  yellow: Int!\n  \n  \"Number of fully compliant items (compliance score >= 80)\"\n  green: Int!\n}"
+    },
+    {
+      "id": "ns00004",
+      "type": "schema",
+      "name": "RiderItem",
+      "description": "Represents an individual requirement or specification from a tour rider document. Rider items are technical and hospitality requirements that venues must meet, organized by category and subcategory codes.",
+      "path": "DEMO UI/client/pages/RiderValidation.tsx",
+      "graphql_schema_physical": "type RiderItem {\n  \"Unique identifier for the rider item\"\n  id: ID!\n  \n  \"Hierarchical code identifying the category and subcategory (e.g., 01.1 for Equipment > Audio)\"\n  code: String!\n  \n  \"Title or name of the requirement\"\n  title: String!\n  \n  \"Detailed description of the requirement specification\"\n  description: String!\n  \n  \"Flag indicating if this item is currently being edited in the UI\"\n  isEditing: Boolean\n  \n  \"Category this rider item belongs to\"\n  category: RiderCategory\n  \n  \"Subcategory or section within the parent category\"\n  subcategory: String\n  \n  \"Timestamp when the rider item was created\"\n  createdAt: String\n  \n  \"Timestamp when the rider item was last modified\"\n  updatedAt: String\n}"
+    },
+    {
+      "id": "ns00005",
+      "type": "schema",
+      "name": "RiderCategory",
+      "description": "Represents a top-level category for organizing rider requirements. Categories include Equipment, Facilities, Information, Parking, Local Crew, Logistics, and Production. Some categories have hierarchical subsections.",
+      "path": "DEMO UI/client/components/RiderSidebar.tsx",
+      "graphql_schema_physical": "type RiderCategory {\n  \"Unique identifier for the category\"\n  id: ID!\n  \n  \"Display label for the category\"\n  label: String!\n  \n  \"Optional icon identifier for visual representation\"\n  icon: String\n  \n  \"List of subsection names within this category (e.g., Audio, Backline for Equipment)\"\n  subsections: [String!]\n  \n  \"List of rider items that belong to this category\"\n  items: [RiderItem!]\n  \n  \"Order index for displaying categories in the UI\"\n  displayOrder: Int\n}\n\n\"Standard rider categories used in tour management\"\nenum RiderCategoryType {\n  \"Technical equipment requirements including Audio, Backline, Lighting, Staging, Video, and Other\"\n  EQUIPMENT\n  \n  \"Venue facility requirements including dressing rooms, catering areas, and backstage amenities\"\n  FACILITIES\n  \n  \"General information and documentation requirements\"\n  INFORMATION\n  \n  \"Parking requirements for tour vehicles, crew, and equipment\"\n  PARKING\n  \n  \"Local crew staffing requirements including technicians and stagehands\"\n  LOCAL_CREW\n  \n  \"Logistical requirements for load-in, setup, and load-out\"\n  LOGISTICS\n  \n  \"Production-specific requirements and technical specifications\"\n  PRODUCTION\n}"
+    }
+  ],
+  "edges": [
+    {
+      "id": "ess00001",
+      "type": "schema_relationship",
+      "source": "ns00001",
+      "target": "ns00002",
+      "label": "leads_to_venue_selection",
+      "details": "conceptual workflow - The tour creation step (Index.tsx) leads to venue selection (SelectVenues.tsx) in the wizard flow. This represents navigation/workflow rather than a data relationship. Note: No actual venues field exists in Tour entity - each page manages independent local state."
+    },
+    {
+      "id": "ess00002",
+      "type": "schema_relationship",
+      "source": "ns00001",
+      "target": "ns00004",
+      "label": "uploads_rider_for_validation",
+      "details": "conceptual workflow - The tour creation includes rider document upload (Index.tsx) which is later validated as RiderItems (RiderValidation.tsx). This represents the wizard flow rather than a data relationship. Note: No actual riderItems field exists in Tour entity - the uploaded file is processed separately in the validation step."
+    },
+    {
+      "id": "ess00003",
+      "type": "schema_relationship",
+      "source": "ns00002",
+      "target": "ns00003",
+      "label": "has_compliance_badge",
+      "details": "one-to-one - Each venue has exactly one compliance badge that categorizes rider requirement compliance into red (critical), yellow (moderate), and green (compliant) items. The badges field in Venue type contains a ComplianceBadge object."
+    },
+    {
+      "id": "ess00004",
+      "type": "schema_relationship",
+      "source": "ns00004",
+      "target": "ns00005",
+      "label": "belongs_to_category",
+      "details": "many-to-one - Each rider item belongs to one category for organizational purposes (Equipment, Facilities, Information, Parking, Local Crew, Logistics, or Production). The category field in RiderItem type references a RiderCategory object."
+    },
+    {
+      "id": "ess00005",
+      "type": "schema_relationship",
+      "source": "ns00005",
+      "target": "ns00004",
+      "label": "contains_items",
+      "details": "one-to-many - A rider category can contain multiple rider items. The items field in RiderCategory type contains an array of RiderItem objects that belong to this category. This is the inverse relationship of belongs_to_category."
+    }
+  ],
+  "relationships": {
+    "description": "Entity relationships inferred from the codebase structure and data flow",
+    "relationships": [
+      {
+        "source": "Tour",
+        "target": "Venue",
+        "type": "one-to-many",
+        "description": "A tour can have multiple venues scheduled for performances",
+        "foreign_key": "venues"
+      },
+      {
+        "source": "Tour",
+        "target": "RiderItem",
+        "type": "one-to-many",
+        "description": "A tour has a rider document containing multiple requirement items",
+        "foreign_key": "riderItems"
+      },
+      {
+        "source": "Venue",
+        "target": "ComplianceBadge",
+        "type": "one-to-one",
+        "description": "Each venue has a compliance badge showing categorized compliance status",
+        "foreign_key": "badges"
+      },
+      {
+        "source": "RiderItem",
+        "target": "RiderCategory",
+        "type": "many-to-one",
+        "description": "Each rider item belongs to a category for organizational purposes",
+        "foreign_key": "category"
+      },
+      {
+        "source": "RiderCategory",
+        "target": "RiderItem",
+        "type": "one-to-many",
+        "description": "A category can contain multiple rider items",
+        "foreign_key": "items"
+      }
+    ]
+  },
+  "notes": {
+    "extraction_source": "TypeScript interfaces and mock data from DEMO UI codebase",
+    "mock_data_locations": [
+      "DEMO UI/client/pages/Index.tsx - Tour creation form fields",
+      "DEMO UI/client/pages/SelectVenues.tsx - Venue form fields and day type selection",
+      "DEMO UI/client/pages/RiderValidation.tsx - RiderItem interface and equipmentItems array",
+      "DEMO UI/client/pages/TourReview.tsx - Venue interface and venues array",
+      "DEMO UI/client/components/VenueList.tsx - Simplified Venue interface and mockVenues array",
+      "DEMO UI/client/components/RiderSidebar.tsx - SidebarSection interface and sections array"
+    ],
+    "graphql_extensions": "All schemas follow GraphQL 2021 specification with proper type definitions, field descriptions, and non-null constraints",
+    "implementation_notes": [
+      "The codebase uses TypeScript interfaces for type safety but does not have a formal GraphQL server implementation",
+      "Data is currently managed via React component state using useState hooks",
+      "No database or ORM detected - all data is stored in-memory as mock data",
+      "Compliance scoring uses a 0-100 scale with color-coded thresholds: red (<40), yellow (40-79), green (>=80)",
+      "Rider items use hierarchical codes (e.g., 01.1) to represent category.subcategory structure",
+      "File upload functionality exists for rider documents (PDF, DOC, DOCX) but file storage is not implemented"
+    ],
+    "domain_concepts": [
+      "Tour: A concert tour spanning multiple dates and venues",
+      "Venue: A location where a concert performance takes place",
+      "Rider: Technical and hospitality requirements document for performers",
+      "Rider Item: Individual requirement specification from a rider document",
+      "Rider Category: Organizational grouping for rider requirements",
+      "Compliance: Measure of how well a venue meets rider requirements",
+      "Compliance Badge: Color-coded breakdown of compliance items by severity"
+    ]
+  }
+}

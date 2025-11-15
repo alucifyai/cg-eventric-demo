@@ -1,0 +1,1080 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generated_at": "2025-11-14",
+    "description": "Logic Node Subgraph for Eventric Tour Management Demo UI - Business logic, workflows, and system behaviors extracted from the codebase using StateCharts format",
+    "total_nodes": 10,
+    "total_edges": 12,
+    "statechart_standard": "https://statecharts.dev/"
+  },
+  "nodes": [
+    {
+      "id": "nl00001",
+      "type": "logic",
+      "name": "TourCreationWorkflow",
+      "description": "Manages the tour creation process including form input capture, rider document upload, and navigation to venue selection step. Handles form state management for tour name, start/end dates, and rider file upload with progress tracking.",
+      "path": "DEMO UI/client/pages/Index.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "tourCreation",
+        "initial": "editingTourDetails",
+        "states": {
+          "editingTourDetails": {
+            "type": "parallel",
+            "description": "User is filling out tour creation form",
+            "states": {
+              "tourInfo": {
+                "initial": "idle",
+                "states": {
+                  "idle": {
+                    "on": {
+                      "INPUT_TOUR_NAME": {
+                        "actions": ["setTourName"]
+                      },
+                      "INPUT_START_DATE": {
+                        "actions": ["setStartDate"]
+                      },
+                      "INPUT_END_DATE": {
+                        "actions": ["setEndDate"]
+                      }
+                    }
+                  }
+                }
+              },
+              "riderUpload": {
+                "initial": "noFile",
+                "states": {
+                  "noFile": {
+                    "description": "No rider file has been selected",
+                    "on": {
+                      "FILE_SELECTED": {
+                        "target": "uploading",
+                        "actions": ["setRiderFileName", "startUpload"]
+                      }
+                    }
+                  },
+                  "uploading": {
+                    "description": "Rider file is being uploaded with simulated progress",
+                    "entry": ["setIsUploading(true)", "setUploadProgress(0)", "startProgressSimulation"],
+                    "on": {
+                      "PROGRESS_UPDATE": {
+                        "actions": ["updateProgress"],
+                        "cond": "progressLessThan100"
+                      },
+                      "UPLOAD_COMPLETE": {
+                        "target": "uploaded",
+                        "actions": ["setIsUploading(false)", "setUploadProgress(100)"]
+                      }
+                    }
+                  },
+                  "uploaded": {
+                    "description": "Rider file has been successfully uploaded",
+                    "type": "final"
+                  }
+                }
+              }
+            }
+          },
+          "navigatingToVenues": {
+            "description": "User clicked Continue button to proceed to venue selection",
+            "entry": ["navigate('/select-venues')"],
+            "type": "final"
+          }
+        },
+        "on": {
+          "CONTINUE": {
+            "target": "navigatingToVenues"
+          }
+        }
+      }
+    },
+    {
+      "id": "nl00002",
+      "type": "logic",
+      "name": "FileUploadProcess",
+      "description": "Simulates file upload progress for rider documents. Implements a progress simulation using setInterval to increment upload progress from 0% to 100% in 10% increments every 300ms.",
+      "path": "DEMO UI/client/pages/Index.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "fileUpload",
+        "initial": "idle",
+        "states": {
+          "idle": {
+            "description": "Waiting for file selection",
+            "on": {
+              "FILE_INPUT_CHANGE": [
+                {
+                  "target": "validatingFile",
+                  "cond": "fileExists",
+                  "actions": ["extractFile"]
+                }
+              ]
+            }
+          },
+          "validatingFile": {
+            "description": "Validating file type and extracting file name",
+            "entry": ["setRiderFileName(file.name)"],
+            "always": {
+              "target": "uploading"
+            }
+          },
+          "uploading": {
+            "description": "Simulating upload with progress updates",
+            "entry": ["setIsUploading(true)", "initializeProgress", "startInterval"],
+            "on": {
+              "INTERVAL_TICK": [
+                {
+                  "target": "completed",
+                  "cond": "progressIsComplete",
+                  "actions": ["clearInterval", "setIsUploading(false)"]
+                },
+                {
+                  "actions": ["incrementProgress"]
+                }
+              ]
+            }
+          },
+          "completed": {
+            "description": "Upload completed successfully",
+            "entry": ["setUploadProgress(100)"],
+            "type": "final"
+          }
+        },
+        "actions": {
+          "extractFile": "file = e.target.files?.[0]",
+          "initializeProgress": "setUploadProgress(0)",
+          "startInterval": "interval = setInterval(() => {...}, 300)",
+          "incrementProgress": "setUploadProgress(prev => prev + 10)",
+          "clearInterval": "clearInterval(interval)"
+        },
+        "guards": {
+          "fileExists": "file !== undefined",
+          "progressIsComplete": "uploadProgress >= 100"
+        }
+      }
+    },
+    {
+      "id": "nl00003",
+      "type": "logic",
+      "name": "VenueSelectionWorkflow",
+      "description": "Manages venue selection process including day type selection (show/off/travel), venue information form capture, and navigation to rider validation. Handles form state for venue name, address, city, state, zip code, and country.",
+      "path": "DEMO UI/client/pages/SelectVenues.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "venueSelection",
+        "initial": "selectingVenue",
+        "states": {
+          "selectingVenue": {
+            "type": "parallel",
+            "description": "User is filling out venue selection form",
+            "states": {
+              "dayTypeSelection": {
+                "initial": "showDay",
+                "states": {
+                  "showDay": {
+                    "description": "Performance day selected",
+                    "entry": ["setDayType('show')"],
+                    "on": {
+                      "SELECT_OFF": {
+                        "target": "offDay"
+                      },
+                      "SELECT_TRAVEL": {
+                        "target": "travelDay"
+                      }
+                    }
+                  },
+                  "offDay": {
+                    "description": "Day off selected",
+                    "entry": ["setDayType('off')"],
+                    "on": {
+                      "SELECT_SHOW": {
+                        "target": "showDay"
+                      },
+                      "SELECT_TRAVEL": {
+                        "target": "travelDay"
+                      }
+                    }
+                  },
+                  "travelDay": {
+                    "description": "Travel day selected",
+                    "entry": ["setDayType('travel')"],
+                    "on": {
+                      "SELECT_SHOW": {
+                        "target": "showDay"
+                      },
+                      "SELECT_OFF": {
+                        "target": "offDay"
+                      }
+                    }
+                  }
+                }
+              },
+              "venueForm": {
+                "initial": "editing",
+                "states": {
+                  "editing": {
+                    "description": "User is entering venue details",
+                    "on": {
+                      "INPUT_VENUE_NAME": {
+                        "actions": ["setVenueName"]
+                      },
+                      "INPUT_STREET_ADDRESS": {
+                        "actions": ["setStreetAddress"]
+                      },
+                      "INPUT_CITY": {
+                        "actions": ["setCity"]
+                      },
+                      "INPUT_STATE": {
+                        "actions": ["setState"]
+                      },
+                      "INPUT_ZIP_CODE": {
+                        "actions": ["setZipCode"]
+                      },
+                      "INPUT_COUNTRY": {
+                        "actions": ["setCountry"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "navigatingToRiderValidation": {
+            "description": "User clicked Continue to proceed to rider validation",
+            "entry": ["navigate('/rider-validation')"],
+            "type": "final"
+          }
+        },
+        "on": {
+          "CONTINUE": {
+            "target": "navigatingToRiderValidation"
+          }
+        }
+      }
+    },
+    {
+      "id": "nl00004",
+      "type": "logic",
+      "name": "RiderItemEditingLogic",
+      "description": "Manages inline editing of rider items with edit mode toggle, text input changes, update/save functionality, and cancel/revert functionality. Maintains separate edit state and original item state for rollback capability.",
+      "path": "DEMO UI/client/pages/RiderValidation.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "riderItemEditing",
+        "initial": "viewMode",
+        "context": {
+          "itemId": "string",
+          "originalDescription": "string",
+          "editText": "string"
+        },
+        "states": {
+          "viewMode": {
+            "description": "Rider item is displayed in read-only mode",
+            "on": {
+              "EDIT_CLICK": {
+                "target": "editMode",
+                "actions": ["setItemEditing(true)", "storeOriginalText"]
+              }
+            }
+          },
+          "editMode": {
+            "description": "Rider item is in edit mode with editable textarea",
+            "type": "parallel",
+            "states": {
+              "textInput": {
+                "initial": "idle",
+                "states": {
+                  "idle": {
+                    "on": {
+                      "TEXT_CHANGE": {
+                        "actions": ["updateEditText"]
+                      }
+                    }
+                  }
+                }
+              },
+              "actions": {
+                "initial": "waitingForAction",
+                "states": {
+                  "waitingForAction": {
+                    "on": {
+                      "UPDATE": {
+                        "target": "#riderItemEditing.savingChanges"
+                      },
+                      "CANCEL": {
+                        "target": "#riderItemEditing.cancelingChanges"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "savingChanges": {
+            "description": "Saving edited rider item description",
+            "entry": [
+              "updateItemDescription(editText)",
+              "setItemEditing(false)"
+            ],
+            "always": {
+              "target": "viewMode"
+            }
+          },
+          "cancelingChanges": {
+            "description": "Canceling edit and reverting to original text",
+            "entry": [
+              "revertEditText(originalDescription)",
+              "setItemEditing(false)"
+            ],
+            "always": {
+              "target": "viewMode"
+            }
+          }
+        },
+        "actions": {
+          "storeOriginalText": "editTexts[itemId] = items.find(i => i.id === itemId).description",
+          "updateEditText": "setEditTexts(prev => ({...prev, [itemId]: value}))",
+          "updateItemDescription": "setItems(items.map(i => i.id === itemId ? {...i, description: editTexts[itemId], isEditing: false} : i))",
+          "revertEditText": "setEditTexts(prev => ({...prev, [itemId]: originalDescription}))"
+        }
+      }
+    },
+    {
+      "id": "nl00005",
+      "type": "logic",
+      "name": "RiderValidationWorkflow",
+      "description": "Manages the rider validation page workflow including displaying equipment items, enabling inline editing for multiple items concurrently, and navigating to tour review step. Handles state for multiple rider items and their edit states.",
+      "path": "DEMO UI/client/pages/RiderValidation.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "riderValidation",
+        "initial": "displayingItems",
+        "states": {
+          "displayingItems": {
+            "description": "Displaying list of rider requirement items with edit capabilities",
+            "type": "parallel",
+            "states": {
+              "itemsList": {
+                "description": "Managing state of multiple rider items",
+                "initial": "loaded",
+                "states": {
+                  "loaded": {
+                    "description": "Equipment items loaded from equipmentItems array",
+                    "on": {
+                      "EDIT_ITEM": {
+                        "actions": ["enableEditMode"]
+                      },
+                      "UPDATE_ITEM": {
+                        "actions": ["saveItemChanges"]
+                      },
+                      "CANCEL_EDIT": {
+                        "actions": ["revertChanges"]
+                      },
+                      "TEXT_CHANGE": {
+                        "actions": ["updateTextState"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "navigatingToReview": {
+            "description": "User clicked Continue to proceed to tour review",
+            "entry": ["navigate('/tour-review')"],
+            "type": "final"
+          }
+        },
+        "on": {
+          "CONTINUE": {
+            "target": "navigatingToReview"
+          }
+        }
+      }
+    },
+    {
+      "id": "nl00006",
+      "type": "logic",
+      "name": "VenueReviewWorkflow",
+      "description": "Manages the tour review page displaying venue compliance grid, modal for venue details, and venue navigation within modal. Calculates compliance colors based on score thresholds and aggregates badge totals across all venues.",
+      "path": "DEMO UI/client/pages/TourReview.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "venueReview",
+        "initial": "displayingGrid",
+        "context": {
+          "venues": "Venue[]",
+          "selectedVenue": "Venue | null",
+          "totalBadges": "{ red: number, yellow: number, green: number }"
+        },
+        "states": {
+          "displayingGrid": {
+            "description": "Displaying venue compliance grid with all venues",
+            "entry": ["calculateTotalBadges", "renderVenueGrid"],
+            "on": {
+              "VENUE_CLICK": {
+                "target": "displayingModal",
+                "actions": ["setSelectedVenue"]
+              }
+            }
+          },
+          "displayingModal": {
+            "description": "Modal showing detailed venue information",
+            "type": "parallel",
+            "states": {
+              "venueDisplay": {
+                "initial": "showing",
+                "states": {
+                  "showing": {
+                    "description": "Displaying selected venue details in modal",
+                    "entry": ["setIsModalOpen(true)", "renderVenueDetails"]
+                  }
+                }
+              },
+              "navigation": {
+                "initial": "idle",
+                "states": {
+                  "idle": {
+                    "on": {
+                      "PREV_VENUE": {
+                        "target": "navigatingPrev",
+                        "actions": ["calculatePrevIndex"]
+                      },
+                      "NEXT_VENUE": {
+                        "target": "navigatingNext",
+                        "actions": ["calculateNextIndex"]
+                      }
+                    }
+                  },
+                  "navigatingPrev": {
+                    "description": "Moving to previous venue in list",
+                    "entry": ["updateSelectedVenue(prevIndex)"],
+                    "always": {
+                      "target": "idle"
+                    }
+                  },
+                  "navigatingNext": {
+                    "description": "Moving to next venue in list",
+                    "entry": ["updateSelectedVenue(nextIndex)"],
+                    "always": {
+                      "target": "idle"
+                    }
+                  }
+                }
+              }
+            },
+            "on": {
+              "CLOSE_MODAL": {
+                "target": "displayingGrid",
+                "actions": ["setIsModalOpen(false)", "clearSelectedVenue"]
+              }
+            }
+          }
+        },
+        "actions": {
+          "calculateTotalBadges": "venues.reduce((acc, venue) => ({ red: acc.red + venue.badges.red, yellow: acc.yellow + venue.badges.yellow, green: acc.green + venue.badges.green }), {red: 0, yellow: 0, green: 0})",
+          "calculatePrevIndex": "currentIndex > 0 ? currentIndex - 1 : venues.length - 1",
+          "calculateNextIndex": "currentIndex < venues.length - 1 ? currentIndex + 1 : 0",
+          "updateSelectedVenue": "setSelectedVenue(venues[index])"
+        }
+      }
+    },
+    {
+      "id": "nl00007",
+      "type": "logic",
+      "name": "VenueModalNavigation",
+      "description": "Manages modal state transitions for venue detail viewing including open, close, and carousel navigation between venues. Implements circular navigation with wraparound at list boundaries.",
+      "path": "DEMO UI/client/pages/TourReview.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "venueModal",
+        "initial": "closed",
+        "context": {
+          "selectedVenue": "Venue | null",
+          "isModalOpen": "boolean",
+          "currentIndex": "number"
+        },
+        "states": {
+          "closed": {
+            "description": "Modal is not visible",
+            "entry": ["setIsModalOpen(false)", "setSelectedVenue(null)"],
+            "on": {
+              "OPEN": {
+                "target": "open",
+                "actions": ["setSelectedVenue", "setIsModalOpen(true)"]
+              }
+            }
+          },
+          "open": {
+            "description": "Modal is visible showing venue details",
+            "entry": ["findCurrentIndex"],
+            "on": {
+              "CLOSE": {
+                "target": "closed"
+              },
+              "PREVIOUS": {
+                "actions": ["navigateToPrevVenue"]
+              },
+              "NEXT": {
+                "actions": ["navigateToNextVenue"]
+              }
+            }
+          }
+        },
+        "actions": {
+          "findCurrentIndex": "const currentIndex = venues.findIndex(v => v.id === selectedVenue.id)",
+          "navigateToPrevVenue": "const prevIndex = currentIndex > 0 ? currentIndex - 1 : venues.length - 1; setSelectedVenue(venues[prevIndex])",
+          "navigateToNextVenue": "const nextIndex = currentIndex < venues.length - 1 ? currentIndex + 1 : 0; setSelectedVenue(venues[nextIndex])"
+        }
+      }
+    },
+    {
+      "id": "nl00008",
+      "type": "logic",
+      "name": "CalendarDateSelection",
+      "description": "Manages calendar date selection logic including month navigation (previous/next), date selection within current month, and optional callback invocation when date is selected. Handles date range calculations and selection state.",
+      "path": "DEMO UI/client/components/Calendar.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "calendar",
+        "initial": "displayingMonth",
+        "context": {
+          "currentMonth": "Date",
+          "selectedDate": "number",
+          "daysInMonth": "number",
+          "firstDayOfMonth": "number"
+        },
+        "states": {
+          "displayingMonth": {
+            "description": "Displaying current month calendar grid",
+            "entry": ["calculateDaysInMonth", "calculateFirstDayOfMonth", "renderCalendarGrid"],
+            "type": "parallel",
+            "states": {
+              "monthNavigation": {
+                "initial": "idle",
+                "states": {
+                  "idle": {
+                    "on": {
+                      "PREV_MONTH": {
+                        "target": "navigatingPrev"
+                      },
+                      "NEXT_MONTH": {
+                        "target": "navigatingNext"
+                      }
+                    }
+                  },
+                  "navigatingPrev": {
+                    "description": "Moving to previous month",
+                    "entry": ["decrementMonth"],
+                    "always": {
+                      "target": "idle"
+                    }
+                  },
+                  "navigatingNext": {
+                    "description": "Moving to next month",
+                    "entry": ["incrementMonth"],
+                    "always": {
+                      "target": "idle"
+                    }
+                  }
+                }
+              },
+              "dateSelection": {
+                "initial": "idle",
+                "states": {
+                  "idle": {
+                    "on": {
+                      "DATE_CLICK": [
+                        {
+                          "target": "selected",
+                          "cond": "isValidDate",
+                          "actions": ["setSelectedDate", "invokeCallback"]
+                        }
+                      ]
+                    }
+                  },
+                  "selected": {
+                    "description": "Date has been selected",
+                    "on": {
+                      "DATE_CLICK": [
+                        {
+                          "target": "selected",
+                          "cond": "isValidDate",
+                          "actions": ["setSelectedDate", "invokeCallback"]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "actions": {
+          "calculateDaysInMonth": "new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate()",
+          "calculateFirstDayOfMonth": "new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay()",
+          "decrementMonth": "setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))",
+          "incrementMonth": "setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))",
+          "invokeCallback": "if (onDateSelect) { onDateSelect(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)) }"
+        },
+        "guards": {
+          "isValidDate": "day > 0 && day <= daysInMonth"
+        }
+      }
+    },
+    {
+      "id": "nl00009",
+      "type": "logic",
+      "name": "RiderCategoryToggle",
+      "description": "Manages expansion/collapse of rider category sections in the sidebar. Implements toggle behavior where clicking an expanded section collapses it, and clicking a collapsed section expands it while collapsing others (accordion pattern).",
+      "path": "DEMO UI/client/components/RiderSidebar.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "riderCategoryToggle",
+        "initial": "equipmentExpanded",
+        "context": {
+          "expandedSection": "string",
+          "sections": [
+            "equipment",
+            "facilities",
+            "information",
+            "parking",
+            "local-crew",
+            "logistics",
+            "production"
+          ]
+        },
+        "states": {
+          "equipmentExpanded": {
+            "description": "Equipment section is expanded showing subsections",
+            "entry": ["setExpandedSection('equipment')", "renderSubsections(['Audio', 'Backline', 'Lighting', 'Staging', 'Video', 'Other'])"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsEquipment"
+                },
+                {
+                  "target": "facilitiesExpanded",
+                  "cond": "sectionIsFacilities"
+                },
+                {
+                  "target": "informationExpanded",
+                  "cond": "sectionIsInformation"
+                },
+                {
+                  "target": "parkingExpanded",
+                  "cond": "sectionIsParking"
+                },
+                {
+                  "target": "localCrewExpanded",
+                  "cond": "sectionIsLocalCrew"
+                },
+                {
+                  "target": "logisticsExpanded",
+                  "cond": "sectionIsLogistics"
+                },
+                {
+                  "target": "productionExpanded",
+                  "cond": "sectionIsProduction"
+                }
+              ]
+            }
+          },
+          "facilitiesExpanded": {
+            "description": "Facilities section is expanded",
+            "entry": ["setExpandedSection('facilities')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsFacilities"
+                },
+                {
+                  "target": "equipmentExpanded",
+                  "cond": "sectionIsEquipment"
+                }
+              ]
+            }
+          },
+          "informationExpanded": {
+            "description": "Information section is expanded",
+            "entry": ["setExpandedSection('information')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsInformation"
+                }
+              ]
+            }
+          },
+          "parkingExpanded": {
+            "description": "Parking section is expanded",
+            "entry": ["setExpandedSection('parking')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsParking"
+                }
+              ]
+            }
+          },
+          "localCrewExpanded": {
+            "description": "Local Crew section is expanded",
+            "entry": ["setExpandedSection('local-crew')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsLocalCrew"
+                }
+              ]
+            }
+          },
+          "logisticsExpanded": {
+            "description": "Logistics section is expanded",
+            "entry": ["setExpandedSection('logistics')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsLogistics"
+                }
+              ]
+            }
+          },
+          "productionExpanded": {
+            "description": "Production section is expanded",
+            "entry": ["setExpandedSection('production')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "collapsed",
+                  "cond": "sectionIsProduction"
+                }
+              ]
+            }
+          },
+          "collapsed": {
+            "description": "All sections are collapsed",
+            "entry": ["setExpandedSection('')"],
+            "on": {
+              "TOGGLE_SECTION": [
+                {
+                  "target": "equipmentExpanded",
+                  "cond": "sectionIsEquipment"
+                },
+                {
+                  "target": "facilitiesExpanded",
+                  "cond": "sectionIsFacilities"
+                },
+                {
+                  "target": "informationExpanded",
+                  "cond": "sectionIsInformation"
+                },
+                {
+                  "target": "parkingExpanded",
+                  "cond": "sectionIsParking"
+                },
+                {
+                  "target": "localCrewExpanded",
+                  "cond": "sectionIsLocalCrew"
+                },
+                {
+                  "target": "logisticsExpanded",
+                  "cond": "sectionIsLogistics"
+                },
+                {
+                  "target": "productionExpanded",
+                  "cond": "sectionIsProduction"
+                }
+              ]
+            }
+          }
+        },
+        "actions": {
+          "setExpandedSection": "setExpandedSection(expandedSection === section.id ? '' : section.id)"
+        },
+        "guards": {
+          "sectionIsEquipment": "section.id === 'equipment'",
+          "sectionIsFacilities": "section.id === 'facilities'",
+          "sectionIsInformation": "section.id === 'information'",
+          "sectionIsParking": "section.id === 'parking'",
+          "sectionIsLocalCrew": "section.id === 'local-crew'",
+          "sectionIsLogistics": "section.id === 'logistics'",
+          "sectionIsProduction": "section.id === 'production'"
+        }
+      }
+    },
+    {
+      "id": "nl00010",
+      "type": "logic",
+      "name": "WizardProgressionWorkflow",
+      "description": "Manages the 4-step wizard flow for tour management: Create Tour → Select Venues → Rider Validation → Tour Review. Tracks current step, marks completed steps, and enables navigation between steps.",
+      "path": "DEMO UI/client/components/WizardSteps.tsx",
+      "statechart_definition": {
+        "type": "compound",
+        "id": "wizardProgression",
+        "initial": "createTour",
+        "context": {
+          "currentPath": "string",
+          "currentStepId": "number",
+          "steps": [
+            {
+              "id": 1,
+              "label": "Create Tour",
+              "path": "/"
+            },
+            {
+              "id": 2,
+              "label": "Select Venues",
+              "path": "/select-venues"
+            },
+            {
+              "id": 3,
+              "label": "Rider Validation",
+              "path": "/rider-validation"
+            },
+            {
+              "id": 4,
+              "label": "Tour Review",
+              "path": "/tour-review"
+            }
+          ]
+        },
+        "states": {
+          "createTour": {
+            "description": "Step 1: Creating tour with name, dates, and rider upload",
+            "meta": {
+              "stepId": 1,
+              "path": "/",
+              "isActive": true,
+              "isCompleted": false
+            },
+            "on": {
+              "NAVIGATE_TO_VENUES": {
+                "target": "selectVenues",
+                "actions": ["markStepCompleted(1)"]
+              },
+              "CLICK_STEP_2": {
+                "target": "selectVenues"
+              },
+              "CLICK_STEP_3": {
+                "target": "riderValidation"
+              },
+              "CLICK_STEP_4": {
+                "target": "tourReview"
+              }
+            }
+          },
+          "selectVenues": {
+            "description": "Step 2: Selecting venues and entering venue details",
+            "meta": {
+              "stepId": 2,
+              "path": "/select-venues",
+              "isActive": true,
+              "isCompleted": false
+            },
+            "on": {
+              "NAVIGATE_TO_RIDER_VALIDATION": {
+                "target": "riderValidation",
+                "actions": ["markStepCompleted(2)"]
+              },
+              "CLICK_STEP_1": {
+                "target": "createTour"
+              },
+              "CLICK_STEP_3": {
+                "target": "riderValidation"
+              },
+              "CLICK_STEP_4": {
+                "target": "tourReview"
+              }
+            }
+          },
+          "riderValidation": {
+            "description": "Step 3: Validating and editing rider requirements",
+            "meta": {
+              "stepId": 3,
+              "path": "/rider-validation",
+              "isActive": true,
+              "isCompleted": false,
+              "hasAIIcon": true
+            },
+            "on": {
+              "NAVIGATE_TO_TOUR_REVIEW": {
+                "target": "tourReview",
+                "actions": ["markStepCompleted(3)"]
+              },
+              "CLICK_STEP_1": {
+                "target": "createTour"
+              },
+              "CLICK_STEP_2": {
+                "target": "selectVenues"
+              },
+              "CLICK_STEP_4": {
+                "target": "tourReview"
+              }
+            }
+          },
+          "tourReview": {
+            "description": "Step 4: Reviewing tour with venue compliance grid",
+            "meta": {
+              "stepId": 4,
+              "path": "/tour-review",
+              "isActive": true,
+              "isCompleted": false
+            },
+            "on": {
+              "CLICK_STEP_1": {
+                "target": "createTour"
+              },
+              "CLICK_STEP_2": {
+                "target": "selectVenues"
+              },
+              "CLICK_STEP_3": {
+                "target": "riderValidation"
+              }
+            },
+            "type": "final"
+          }
+        },
+        "actions": {
+          "markStepCompleted": "Mark previous steps as completed based on current step ID"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "ell00001",
+      "type": "dependency",
+      "source": "nl00001",
+      "target": "nl00002",
+      "label": "",
+      "details": "TourCreationWorkflow triggers FileUploadProcess when user selects a rider document file. The handleFileSelect function (Index.tsx:15-34) initiates the simulated upload with progress tracking by calling setInterval to increment upload progress from 0% to 100%."
+    },
+    {
+      "id": "ell00002",
+      "type": "dependency",
+      "source": "nl00003",
+      "target": "nl00008",
+      "label": "",
+      "details": "VenueSelectionWorkflow uses CalendarDateSelection for date selection functionality. SelectVenues.tsx imports Calendar component (line 6) and renders it (line 49) to allow users to select event dates for venue scheduling."
+    },
+    {
+      "id": "ell00003",
+      "type": "dependency",
+      "source": "nl00005",
+      "target": "nl00009",
+      "label": "",
+      "details": "RiderValidationWorkflow uses RiderCategoryToggle for organizing and navigating rider requirement categories. RiderValidation.tsx imports RiderSidebar component (line 6) and renders it (line 161) to provide category navigation (Equipment, Facilities, Information, Parking, Local Crew, Logistics, Production)."
+    },
+    {
+      "id": "ell00004",
+      "type": "dependency",
+      "source": "nl00005",
+      "target": "nl00004",
+      "label": "",
+      "details": "RiderValidationWorkflow uses RiderItemEditingLogic to enable inline editing of rider requirement descriptions. The workflow includes handleEditClick (line 75), handleUpdate (line 83), handleCancel (line 93), and handleTextChange (line 105) functions that implement the edit-update-cancel pattern for rider items."
+    },
+    {
+      "id": "ell00005",
+      "type": "dependency",
+      "source": "nl00006",
+      "target": "nl00007",
+      "label": "",
+      "details": "VenueReviewWorkflow uses VenueModalNavigation to display detailed venue information in a modal with carousel navigation. The workflow includes handleOpenModal (line 130), handleCloseModal (line 135), handlePrevVenue (line 140), and handleNextVenue (line 147) functions that manage modal state and venue navigation."
+    },
+    {
+      "id": "ell00006",
+      "type": "dependency",
+      "source": "nl00001",
+      "target": "nl00010",
+      "label": "",
+      "details": "TourCreationWorkflow uses WizardProgressionWorkflow for tracking and displaying current step in the 4-step wizard. Index.tsx imports WizardSteps component (line 4) and renders it (line 52) to show Step 1: Create Tour as active and mark previous steps as completed."
+    },
+    {
+      "id": "ell00007",
+      "type": "dependency",
+      "source": "nl00003",
+      "target": "nl00010",
+      "label": "",
+      "details": "VenueSelectionWorkflow uses WizardProgressionWorkflow for tracking and displaying current step in the 4-step wizard. SelectVenues.tsx imports WizardSteps component (line 5) and renders it (line 35) to show Step 2: Select Venues as active and mark Step 1 as completed."
+    },
+    {
+      "id": "ell00008",
+      "type": "dependency",
+      "source": "nl00005",
+      "target": "nl00010",
+      "label": "",
+      "details": "RiderValidationWorkflow uses WizardProgressionWorkflow for tracking and displaying current step in the 4-step wizard. RiderValidation.tsx imports WizardSteps component (line 5) and renders it (line 121) to show Step 3: Rider Validation as active and mark Steps 1-2 as completed."
+    },
+    {
+      "id": "ell00009",
+      "type": "dependency",
+      "source": "nl00006",
+      "target": "nl00010",
+      "label": "",
+      "details": "VenueReviewWorkflow uses WizardProgressionWorkflow for tracking and displaying current step in the 4-step wizard. TourReview.tsx imports WizardSteps component (line 11) and renders it (line 172) to show Step 4: Tour Review as active and mark Steps 1-3 as completed."
+    },
+    {
+      "id": "ell00010",
+      "type": "dependency",
+      "source": "nl00001",
+      "target": "nl00003",
+      "label": "",
+      "details": "TourCreationWorkflow navigates to VenueSelectionWorkflow when user clicks Continue button. The handleContinue function (Index.tsx:36-38) calls navigate('/select-venues') to proceed to Step 2 of the wizard flow, transitioning from tour creation to venue selection."
+    },
+    {
+      "id": "ell00011",
+      "type": "dependency",
+      "source": "nl00003",
+      "target": "nl00005",
+      "label": "",
+      "details": "VenueSelectionWorkflow navigates to RiderValidationWorkflow when user clicks Continue button. The handleContinue function (SelectVenues.tsx:19-21) calls navigate('/rider-validation') to proceed to Step 3 of the wizard flow, transitioning from venue selection to rider validation."
+    },
+    {
+      "id": "ell00012",
+      "type": "dependency",
+      "source": "nl00005",
+      "target": "nl00006",
+      "label": "",
+      "details": "RiderValidationWorkflow navigates to VenueReviewWorkflow when user clicks Continue button. The handleContinue function (RiderValidation.tsx:71-73) calls navigate('/tour-review') to proceed to Step 4 of the wizard flow, transitioning from rider validation to final tour review."
+    }
+  ],
+  "notes": {
+    "extraction_source": "Event handlers, state management hooks, and navigation logic from DEMO UI codebase",
+    "logic_locations": [
+      "DEMO UI/client/pages/Index.tsx - Tour creation and file upload logic",
+      "DEMO UI/client/pages/SelectVenues.tsx - Venue selection and day type logic",
+      "DEMO UI/client/pages/RiderValidation.tsx - Rider item editing workflow",
+      "DEMO UI/client/pages/TourReview.tsx - Venue review and modal navigation",
+      "DEMO UI/client/components/Calendar.tsx - Calendar date selection logic",
+      "DEMO UI/client/components/WizardSteps.tsx - Wizard progression tracking",
+      "DEMO UI/client/components/RiderSidebar.tsx - Category expansion toggle",
+      "DEMO UI/server/index.ts - API endpoint handlers (minimal)",
+      "DEMO UI/server/routes/demo.ts - Demo route handler"
+    ],
+    "statechart_standard": "All StateCharts follow the https://statecharts.dev/ specification with states, transitions, actions, guards, and context",
+    "implementation_notes": [
+      "Business logic is primarily client-side in React component event handlers",
+      "No formal backend business logic beyond simple API endpoints",
+      "State management uses React useState hooks - no Redux or global state management",
+      "Navigation uses React Router's useNavigate hook",
+      "File upload is simulated with setInterval - no actual file storage",
+      "No database operations - all data is in-memory component state",
+      "Wizard flow is managed through React Router routes and navigation",
+      "StateCharts represent actual implementation logic extracted from code"
+    ],
+    "workflow_patterns": [
+      "Multi-step wizard: Linear progression through 4 steps with backward navigation",
+      "Inline editing: Edit-Update-Cancel pattern for rider items",
+      "Modal navigation: Carousel pattern for venue details with wraparound",
+      "Accordion expansion: Toggle pattern for category sections",
+      "Simulated async: Progress simulation for file upload",
+      "Form state management: Independent state per form field with onChange handlers"
+    ]
+  }
+}

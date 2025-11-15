@@ -1,0 +1,2493 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generated_at": "2025-11-14",
+    "description": "Interface Node Subgraph for Eventric Tour Management Demo UI",
+    "total_nodes": 11,
+    "total_edges": 24
+  },
+  "nodes": [
+    {
+      "id": "ni00001",
+      "type": "interface",
+      "name": "ApplicationShell",
+      "description": "Main application container with routing, global state providers, and toast notifications",
+      "path": "DEMO UI/client/App.tsx",
+      "uidl_conceptual": {
+        "type": "ApplicationContainer",
+        "children": [
+          {
+            "type": "QueryProvider",
+            "children": [
+              {
+                "type": "TooltipProvider",
+                "children": [
+                  {
+                    "type": "ToastContainer"
+                  },
+                  {
+                    "type": "SonnerToastContainer"
+                  },
+                  {
+                    "type": "Router",
+                    "children": [
+                      {
+                        "type": "RouteDefinitions",
+                        "children": [
+                          {
+                            "type": "Route",
+                            "path": "/",
+                            "component": "CreateTourPage"
+                          },
+                          {
+                            "type": "Route",
+                            "path": "/select-venues",
+                            "component": "SelectVenuesPage"
+                          },
+                          {
+                            "type": "Route",
+                            "path": "/rider-validation",
+                            "component": "RiderValidationPage"
+                          },
+                          {
+                            "type": "Route",
+                            "path": "/tour-review",
+                            "component": "TourReviewPage"
+                          },
+                          {
+                            "type": "Route",
+                            "path": "*",
+                            "component": "NotFoundPage"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "ApplicationShell",
+        "node": {
+          "type": "element",
+          "elementType": "QueryProvider",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "TooltipProvider",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "Toaster"
+                },
+                {
+                  "type": "element",
+                  "elementType": "Sonner"
+                },
+                {
+                  "type": "element",
+                  "elementType": "BrowserRouter",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "Routes",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/",
+                            "element": "Index"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/select-venues",
+                            "element": "SelectVenues"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/rider-validation",
+                            "element": "RiderValidation"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/tour-review",
+                            "element": "TourReview"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "*",
+                            "element": "NotFound"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "App",
+        "node": {
+          "type": "element",
+          "elementType": "QueryClientProvider",
+          "attrs": {
+            "client": "queryClient"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "TooltipProvider",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "Toaster"
+                },
+                {
+                  "type": "element",
+                  "elementType": "Sonner"
+                },
+                {
+                  "type": "element",
+                  "elementType": "BrowserRouter",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "Routes",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/",
+                            "element": "<Index />"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/select-venues",
+                            "element": "<SelectVenues />"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/rider-validation",
+                            "element": "<RiderValidation />"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "/tour-review",
+                            "element": "<TourReview />"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "Route",
+                          "attrs": {
+                            "path": "*",
+                            "element": "<NotFound />"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00002",
+      "type": "interface",
+      "name": "CreateTourPage",
+      "description": "Initial tour creation form where users input tour details and upload rider document",
+      "path": "DEMO UI/client/pages/Index.tsx",
+      "uidl_conceptual": {
+        "type": "Page",
+        "children": [
+          {
+            "type": "Header"
+          },
+          {
+            "type": "MainContent",
+            "children": [
+              {
+                "type": "WizardNavigation"
+              },
+              {
+                "type": "PageHeader",
+                "title": "Create New Tour",
+                "subtitle": "[ name of the tour goes here ]"
+              },
+              {
+                "type": "Form",
+                "fields": [
+                  {
+                    "type": "FormField",
+                    "fieldType": "text",
+                    "label": "Tour Name",
+                    "placeholder": "Add tour name",
+                    "intent": "capture_tour_name"
+                  },
+                  {
+                    "type": "FormField",
+                    "fieldType": "text",
+                    "label": "Start Date",
+                    "placeholder": "Select start date....",
+                    "intent": "capture_start_date"
+                  },
+                  {
+                    "type": "FormField",
+                    "fieldType": "text",
+                    "label": "End Date",
+                    "placeholder": "Select end date....",
+                    "intent": "capture_end_date"
+                  },
+                  {
+                    "type": "FormField",
+                    "fieldType": "file",
+                    "label": "Upload RIDER",
+                    "acceptedTypes": [".pdf", ".doc", ".docx"],
+                    "intent": "upload_rider_document"
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "ProgressIndicator",
+                    "intent": "show_upload_progress"
+                  }
+                ]
+              },
+              {
+                "type": "ActionBar",
+                "children": [
+                  {
+                    "type": "Button",
+                    "label": "Cancel",
+                    "intent": "cancel_form"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Continue",
+                    "intent": "proceed_to_venue_selection"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "CreateTourPage",
+        "node": {
+          "type": "element",
+          "elementType": "container",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "element",
+              "elementType": "main",
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "WizardSteps"
+                },
+                {
+                  "type": "element",
+                  "elementType": "container",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "heading",
+                      "children": ["Create New Tour"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "text",
+                      "children": ["[ name of the tour goes here ]"]
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "form",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "formField",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "label",
+                          "children": ["Tour Name"]
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "input",
+                          "attrs": {
+                            "type": "text",
+                            "placeholder": "Add tour name"
+                          },
+                          "events": {
+                            "change": {
+                              "type": "stateChange",
+                              "modifies": "$tourName"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "formField",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "label",
+                          "children": ["Start Date"]
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "input",
+                          "attrs": {
+                            "type": "text",
+                            "placeholder": "Select start date...."
+                          },
+                          "events": {
+                            "change": {
+                              "type": "stateChange",
+                              "modifies": "$startDate"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "formField",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "label",
+                          "children": ["End Date"]
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "input",
+                          "attrs": {
+                            "type": "text",
+                            "placeholder": "Select end date...."
+                          },
+                          "events": {
+                            "change": {
+                              "type": "stateChange",
+                              "modifies": "$endDate"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "formField",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "label",
+                          "children": ["Upload RIDER"]
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "fileInput",
+                          "attrs": {
+                            "accept": ".pdf,.doc,.docx"
+                          },
+                          "events": {
+                            "change": {
+                              "type": "fileUpload",
+                              "modifies": "$riderFile"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "actionBar",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Cancel"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Continue"],
+                      "events": {
+                        "click": {
+                          "type": "navigation",
+                          "navigatesTo": "/select-venues"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "Index",
+        "stateDefinitions": {
+          "tourName": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "startDate": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "endDate": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "riderFileName": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "isUploading": {
+            "type": "boolean",
+            "defaultValue": false
+          },
+          "uploadProgress": {
+            "type": "number",
+            "defaultValue": 0
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "min-h-screen flex flex-col"
+          },
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "element",
+              "elementType": "main",
+              "style": {
+                "className": "flex-1 flex justify-center items-start"
+              },
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "WizardSteps"
+                },
+                {
+                  "type": "element",
+                  "elementType": "input",
+                  "attrs": {
+                    "type": "text",
+                    "placeholder": "Add tour name",
+                    "value": "$tourName"
+                  },
+                  "style": {
+                    "className": "flex-1 bg-transparent text-sm font-normal leading-5 tracking-[-0.28px] text-[#FCFCFC] opacity-60"
+                  },
+                  "events": {
+                    "onChange": [
+                      {
+                        "type": "propCall",
+                        "calls": "setTourName",
+                        "args": ["$e.target.value"]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "input",
+                  "attrs": {
+                    "type": "file",
+                    "accept": ".pdf,.doc,.docx"
+                  },
+                  "events": {
+                    "onChange": [
+                      {
+                        "type": "propCall",
+                        "calls": "handleFileSelect"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "button",
+                  "attrs": {
+                    "type": "button"
+                  },
+                  "style": {
+                    "className": "w-[200px] px-5 py-3 flex items-center justify-center gap-2 rounded-xl"
+                  },
+                  "events": {
+                    "onClick": [
+                      {
+                        "type": "propCall",
+                        "calls": "handleContinue"
+                      }
+                    ]
+                  },
+                  "children": ["Continue"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00003",
+      "type": "interface",
+      "name": "SelectVenuesPage",
+      "description": "Venue selection interface with calendar, location search, and venue list",
+      "path": "DEMO UI/client/pages/SelectVenues.tsx",
+      "uidl_conceptual": {
+        "type": "Page",
+        "children": [
+          {
+            "type": "Header"
+          },
+          {
+            "type": "MainContent",
+            "children": [
+              {
+                "type": "WizardNavigation"
+              },
+              {
+                "type": "PageHeader",
+                "title": "Add Events on tour",
+                "subtitle": "[ name of the tour goes here ]"
+              },
+              {
+                "type": "ContentLayout",
+                "children": [
+                  {
+                    "type": "Calendar",
+                    "intent": "select_event_dates"
+                  },
+                  {
+                    "type": "Form",
+                    "children": [
+                      {
+                        "type": "DayTypeSelector",
+                        "options": ["Show Day", "Day Off", "Travel Day"],
+                        "intent": "select_day_type"
+                      },
+                      {
+                        "type": "FormField",
+                        "fieldType": "search",
+                        "label": "Venue Name",
+                        "placeholder": "Search ...",
+                        "intent": "search_venue"
+                      },
+                      {
+                        "type": "FormField",
+                        "fieldType": "text",
+                        "label": "Street Address",
+                        "placeholder": "Street name here...",
+                        "intent": "capture_street_address"
+                      },
+                      {
+                        "type": "FormFieldGroup",
+                        "fields": [
+                          {
+                            "type": "FormField",
+                            "fieldType": "text",
+                            "label": "City",
+                            "intent": "capture_city"
+                          },
+                          {
+                            "type": "FormField",
+                            "fieldType": "text",
+                            "label": "State",
+                            "intent": "capture_state"
+                          },
+                          {
+                            "type": "FormField",
+                            "fieldType": "text",
+                            "label": "Zip Code",
+                            "intent": "capture_zip_code"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "FormField",
+                        "fieldType": "text",
+                        "label": "Country",
+                        "placeholder": "Select...",
+                        "intent": "capture_country"
+                      },
+                      {
+                        "type": "Button",
+                        "label": "Add Event",
+                        "intent": "add_event_to_tour"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "VenueList",
+                    "intent": "display_selected_venues"
+                  }
+                ]
+              },
+              {
+                "type": "ActionBar",
+                "children": [
+                  {
+                    "type": "Button",
+                    "label": "Skip for now",
+                    "intent": "skip_venue_selection"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Continue",
+                    "intent": "proceed_to_rider_validation"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "StatusBar",
+            "children": [
+              {
+                "type": "ProgressIndicator",
+                "label": "Rider Digest",
+                "progress": 65,
+                "message": "Analyzing venue compliance with your rider requirements"
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "SelectVenuesPage",
+        "node": {
+          "type": "element",
+          "elementType": "container",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "element",
+              "elementType": "main",
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "WizardSteps"
+                },
+                {
+                  "type": "element",
+                  "elementType": "container",
+                  "children": [
+                    {
+                      "type": "component",
+                      "componentType": "Calendar"
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "form",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "buttonGroup",
+                          "children": [
+                            {
+                              "type": "element",
+                              "elementType": "button",
+                              "children": ["Show Day"],
+                              "events": {
+                                "click": {
+                                  "type": "stateChange",
+                                  "modifies": "$dayType",
+                                  "newValue": "show"
+                                }
+                              }
+                            },
+                            {
+                              "type": "element",
+                              "elementType": "button",
+                              "children": ["Day Off"],
+                              "events": {
+                                "click": {
+                                  "type": "stateChange",
+                                  "modifies": "$dayType",
+                                  "newValue": "off"
+                                }
+                              }
+                            },
+                            {
+                              "type": "element",
+                              "elementType": "button",
+                              "children": ["Travel Day"],
+                              "events": {
+                                "click": {
+                                  "type": "stateChange",
+                                  "modifies": "$dayType",
+                                  "newValue": "travel"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "component",
+                      "componentType": "VenueList"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "actionBar",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Skip for now"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Continue"],
+                      "events": {
+                        "click": {
+                          "type": "navigation",
+                          "navigatesTo": "/rider-validation"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "SelectVenues",
+        "stateDefinitions": {
+          "dayType": {
+            "type": "string",
+            "defaultValue": "show"
+          },
+          "venueName": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "streetAddress": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "city": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "state": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "zipCode": {
+            "type": "string",
+            "defaultValue": ""
+          },
+          "country": {
+            "type": "string",
+            "defaultValue": ""
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "component",
+              "componentType": "WizardSteps"
+            },
+            {
+              "type": "component",
+              "componentType": "Calendar"
+            },
+            {
+              "type": "component",
+              "componentType": "VenueList"
+            },
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "handleContinue"
+                  }
+                ]
+              },
+              "children": ["Continue"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00004",
+      "type": "interface",
+      "name": "RiderValidationPage",
+      "description": "AI-powered rider requirement validation and editing interface",
+      "path": "DEMO UI/client/pages/RiderValidation.tsx",
+      "uidl_conceptual": {
+        "type": "Page",
+        "children": [
+          {
+            "type": "Header"
+          },
+          {
+            "type": "MainContent",
+            "children": [
+              {
+                "type": "WizardNavigation"
+              },
+              {
+                "type": "PageHeader",
+                "title": "Rider Validation",
+                "subtitle": "[ name of the tour goes here ]",
+                "metadata": {
+                  "fileName": "tech_rider_file_name.PDF",
+                  "fileSize": "1.45 Mb"
+                }
+              },
+              {
+                "type": "ContentLayout",
+                "children": [
+                  {
+                    "type": "RiderCategorySidebar",
+                    "categories": [
+                      {
+                        "name": "Equipment",
+                        "subcategories": ["Audio", "Backline", "Lighting", "Staging", "Video", "Other"]
+                      },
+                      { "name": "Facilities" },
+                      { "name": "Information" },
+                      { "name": "Parking" },
+                      { "name": "Local Crew" },
+                      { "name": "Logistics" },
+                      { "name": "Production" }
+                    ]
+                  },
+                  {
+                    "type": "RiderItemList",
+                    "children": [
+                      {
+                        "type": "RiderCategory",
+                        "code": "01",
+                        "title": "Equipment",
+                        "topicCount": 5,
+                        "children": [
+                          {
+                            "type": "RiderItem",
+                            "code": "01.1",
+                            "title": "Audio",
+                            "description": "Full PA system with 32-channel mixing board",
+                            "editable": true,
+                            "intent": "validate_audio_requirements"
+                          },
+                          {
+                            "type": "RiderItem",
+                            "code": "01.2",
+                            "title": "Backline",
+                            "description": "Full PA system with 32-channel mixing board",
+                            "editable": true,
+                            "intent": "validate_backline_requirements"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ActionBar",
+                "children": [
+                  {
+                    "type": "Button",
+                    "label": "Cancel",
+                    "intent": "cancel_validation"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Continue",
+                    "intent": "proceed_to_tour_review"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "RiderValidationPage",
+        "node": {
+          "type": "element",
+          "elementType": "container",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "element",
+              "elementType": "main",
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "WizardSteps"
+                },
+                {
+                  "type": "element",
+                  "elementType": "container",
+                  "children": [
+                    {
+                      "type": "component",
+                      "componentType": "RiderSidebar"
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "list",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "listItem",
+                          "children": [
+                            {
+                              "type": "element",
+                              "elementType": "text",
+                              "children": ["Audio"]
+                            },
+                            {
+                              "type": "element",
+                              "elementType": "editableText",
+                              "attrs": {
+                                "value": "$item.description"
+                              },
+                              "events": {
+                                "change": {
+                                  "type": "stateChange",
+                                  "modifies": "$item.description"
+                                }
+                              }
+                            },
+                            {
+                              "type": "element",
+                              "elementType": "button",
+                              "children": ["Update"],
+                              "events": {
+                                "click": {
+                                  "type": "action",
+                                  "calls": "updateRiderItem"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "actionBar",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Cancel"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Continue"],
+                      "events": {
+                        "click": {
+                          "type": "navigation",
+                          "navigatesTo": "/tour-review"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "RiderValidation",
+        "stateDefinitions": {
+          "items": {
+            "type": "array",
+            "defaultValue": []
+          },
+          "editTexts": {
+            "type": "object",
+            "defaultValue": {}
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "component",
+              "componentType": "WizardSteps"
+            },
+            {
+              "type": "component",
+              "componentType": "RiderSidebar"
+            },
+            {
+              "type": "element",
+              "elementType": "textarea",
+              "attrs": {
+                "value": "$editTexts[item.id]"
+              },
+              "events": {
+                "onChange": [
+                  {
+                    "type": "propCall",
+                    "calls": "handleTextChange",
+                    "args": ["$item.id", "$e.target.value"]
+                  }
+                ]
+              }
+            },
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "handleContinue"
+                  }
+                ]
+              },
+              "children": ["Continue"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00005",
+      "type": "interface",
+      "name": "TourReviewPage",
+      "description": "Final tour review showing venue compliance scores and detailed venue analysis",
+      "path": "DEMO UI/client/pages/TourReview.tsx",
+      "uidl_conceptual": {
+        "type": "Page",
+        "children": [
+          {
+            "type": "Header"
+          },
+          {
+            "type": "MainContent",
+            "children": [
+              {
+                "type": "WizardNavigation"
+              },
+              {
+                "type": "PageHeader",
+                "title": "Tour Review",
+                "subtitle": "Review the compliance status of your selected venues",
+                "metadata": {
+                  "tourDates": "DeC. 21 - Dec. 29, 2025"
+                }
+              },
+              {
+                "type": "FilterBar",
+                "children": [
+                  {
+                    "type": "Badge",
+                    "color": "red",
+                    "count": 2
+                  },
+                  {
+                    "type": "Badge",
+                    "color": "yellow",
+                    "count": 11
+                  },
+                  {
+                    "type": "Badge",
+                    "color": "green",
+                    "count": 604
+                  },
+                  {
+                    "type": "SortControl",
+                    "sortBy": "Compliance"
+                  }
+                ]
+              },
+              {
+                "type": "VenueGrid",
+                "children": [
+                  {
+                    "type": "VenueCard",
+                    "intent": "display_venue_compliance",
+                    "fields": {
+                      "name": "Madison Square Garden",
+                      "location": "New York, NY",
+                      "date": "Dec. 29 2025",
+                      "compliance": 24,
+                      "badges": {
+                        "red": 2,
+                        "yellow": 3,
+                        "green": 48
+                      }
+                    },
+                    "actions": [
+                      {
+                        "type": "Button",
+                        "label": "summary",
+                        "intent": "show_venue_details"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ActionBar",
+                "children": [
+                  {
+                    "type": "Button",
+                    "label": "Cancel",
+                    "intent": "cancel_tour"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Publish Tour",
+                    "intent": "publish_tour"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Modal",
+            "trigger": "venue_card_summary",
+            "children": [
+              {
+                "type": "VenueSummary",
+                "fields": {
+                  "complianceScore": 24,
+                  "explanation": "Venue compliance analysis",
+                  "suggestions": [
+                    "Invest in weather protection equipment and backup power systems",
+                    "Work with venue to enhance technical infrastructure",
+                    "Plan for altitude considerations"
+                  ]
+                },
+                "actions": [
+                  {
+                    "type": "Button",
+                    "label": "See Full Analysis",
+                    "intent": "view_full_analysis"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Previous Venue",
+                    "intent": "navigate_to_previous_venue"
+                  },
+                  {
+                    "type": "Button",
+                    "label": "Next Venue",
+                    "intent": "navigate_to_next_venue"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "TourReviewPage",
+        "node": {
+          "type": "element",
+          "elementType": "container",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "element",
+              "elementType": "main",
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "WizardSteps"
+                },
+                {
+                  "type": "element",
+                  "elementType": "grid",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "card",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "complianceBadge",
+                          "attrs": {
+                            "score": "$venue.compliance"
+                          }
+                        },
+                        {
+                          "type": "element",
+                          "elementType": "button",
+                          "children": ["summary"],
+                          "events": {
+                            "click": {
+                              "type": "action",
+                              "calls": "openVenueModal"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "actionBar",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Cancel"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "children": ["Publish Tour"]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "modal",
+              "attrs": {
+                "isOpen": "$isModalOpen"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "venueDetails",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "events": {
+                        "click": {
+                          "type": "action",
+                          "calls": "handlePrevVenue"
+                        }
+                      }
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "button",
+                      "events": {
+                        "click": {
+                          "type": "action",
+                          "calls": "handleNextVenue"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "TourReview",
+        "stateDefinitions": {
+          "selectedVenue": {
+            "type": "object",
+            "defaultValue": null
+          },
+          "isModalOpen": {
+            "type": "boolean",
+            "defaultValue": false
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Header"
+            },
+            {
+              "type": "component",
+              "componentType": "WizardSteps"
+            },
+            {
+              "type": "element",
+              "elementType": "div",
+              "style": {
+                "className": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              }
+            },
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "handleOpenModal",
+                    "args": ["$venue"]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00006",
+      "type": "interface",
+      "name": "NotFoundPage",
+      "description": "404 error page for non-existent routes",
+      "path": "DEMO UI/client/pages/NotFound.tsx",
+      "uidl_conceptual": {
+        "type": "ErrorPage",
+        "children": [
+          {
+            "type": "ErrorDisplay",
+            "errorCode": "404",
+            "message": "Oops! Page not found",
+            "children": [
+              {
+                "type": "Link",
+                "label": "Return to Home",
+                "intent": "navigate_to_home"
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "NotFoundPage",
+        "node": {
+          "type": "element",
+          "elementType": "container",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "heading",
+              "children": ["404"]
+            },
+            {
+              "type": "element",
+              "elementType": "text",
+              "children": ["Oops! Page not found"]
+            },
+            {
+              "type": "element",
+              "elementType": "link",
+              "attrs": {
+                "href": "/"
+              },
+              "children": ["Return to Home"]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "NotFound",
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "min-h-screen flex items-center justify-center bg-gray-100"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "h1",
+              "style": {
+                "className": "text-4xl font-bold mb-4"
+              },
+              "children": ["404"]
+            },
+            {
+              "type": "element",
+              "elementType": "p",
+              "style": {
+                "className": "text-xl text-gray-600 mb-4"
+              },
+              "children": ["Oops! Page not found"]
+            },
+            {
+              "type": "element",
+              "elementType": "a",
+              "attrs": {
+                "href": "/"
+              },
+              "style": {
+                "className": "text-blue-500 hover:text-blue-700 underline"
+              },
+              "children": ["Return to Home"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00007",
+      "type": "interface",
+      "name": "AppHeader",
+      "description": "Application header with logo, search, and user controls",
+      "path": "DEMO UI/client/components/Header.tsx",
+      "uidl_conceptual": {
+        "type": "NavigationBar",
+        "children": [
+          {
+            "type": "Logo",
+            "intent": "display_brand"
+          },
+          {
+            "type": "SearchBox",
+            "placeholder": "Search ...",
+            "shortcut": "⌘ F",
+            "intent": "search_application"
+          },
+          {
+            "type": "ActionGroup",
+            "children": [
+              {
+                "type": "Icon",
+                "iconType": "User",
+                "intent": "access_user_menu"
+              },
+              {
+                "type": "Icon",
+                "iconType": "Calendar",
+                "hasNotification": true,
+                "intent": "view_calendar"
+              },
+              {
+                "type": "Avatar",
+                "intent": "access_profile"
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "AppHeader",
+        "node": {
+          "type": "element",
+          "elementType": "header",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "logo",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "image",
+                  "attrs": {
+                    "alt": "Logo"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "searchBox",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "icon",
+                  "attrs": {
+                    "type": "Search"
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Search ..."]
+                },
+                {
+                  "type": "element",
+                  "elementType": "kbd",
+                  "children": ["⌘ F"]
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "actionGroup",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "icon",
+                  "attrs": {
+                    "type": "User"
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "icon",
+                  "attrs": {
+                    "type": "Calendar"
+                  },
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "notificationBadge"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "avatar",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "image",
+                      "attrs": {
+                        "alt": "User avatar"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "Header",
+        "node": {
+          "type": "element",
+          "elementType": "header",
+          "style": {
+            "className": "flex items-center justify-end gap-6 px-6 py-4 bg-black/[0.34] backdrop-blur-sm"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "div",
+              "style": {
+                "className": "w-12 h-12 rounded-full border-[3px] border-white overflow-hidden"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "img",
+                  "attrs": {
+                    "src": "https://api.builder.io/api/v1/image/assets/TEMP/45f0cfce8515218935683d89c5d1d0ed6b2eef23?width=96",
+                    "alt": "Logo"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "div",
+              "style": {
+                "className": "flex items-center justify-between w-full max-w-[360px]"
+              },
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "Search",
+                  "attrs": {
+                    "className": "w-4 h-4 text-white/60"
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "children": ["⌘ F"]
+                }
+              ]
+            },
+            {
+              "type": "component",
+              "componentType": "User",
+              "attrs": {
+                "className": "w-6 h-6 text-white"
+              }
+            },
+            {
+              "type": "component",
+              "componentType": "Calendar",
+              "attrs": {
+                "className": "w-6 h-6 text-white"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00008",
+      "type": "interface",
+      "name": "WizardNavigation",
+      "description": "Step-by-step wizard navigation showing progress through tour creation flow",
+      "path": "DEMO UI/client/components/WizardSteps.tsx",
+      "uidl_conceptual": {
+        "type": "StepNavigator",
+        "steps": [
+          {
+            "id": 1,
+            "label": "Create Tour",
+            "path": "/",
+            "intent": "navigate_to_create_tour"
+          },
+          {
+            "id": 2,
+            "label": "Select Venues",
+            "path": "/select-venues",
+            "intent": "navigate_to_select_venues"
+          },
+          {
+            "id": 3,
+            "label": "Rider Validation",
+            "path": "/rider-validation",
+            "hasIcon": true,
+            "intent": "navigate_to_rider_validation"
+          },
+          {
+            "id": 4,
+            "label": "Tour Review",
+            "path": "/tour-review",
+            "intent": "navigate_to_tour_review"
+          }
+        ],
+        "currentStep": "dynamic",
+        "completedSteps": "dynamic"
+      },
+      "ui_blueprint": {
+        "name": "WizardNavigation",
+        "node": {
+          "type": "element",
+          "elementType": "nav",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "stepLink",
+              "attrs": {
+                "to": "/",
+                "active": "$isActive",
+                "completed": "$isCompleted"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Create Tour"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "completionIcon",
+                  "visible": "$isCompleted"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "stepLink",
+              "attrs": {
+                "to": "/select-venues",
+                "active": "$isActive",
+                "completed": "$isCompleted"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Select Venues"]
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "stepLink",
+              "attrs": {
+                "to": "/rider-validation",
+                "active": "$isActive",
+                "completed": "$isCompleted"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "aiIcon"
+                },
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Rider Validation"]
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "stepLink",
+              "attrs": {
+                "to": "/tour-review",
+                "active": "$isActive",
+                "completed": "$isCompleted"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Tour Review"]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "WizardSteps",
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "flex items-center justify-center gap-6 w-full pb-12"
+          },
+          "children": [
+            {
+              "type": "component",
+              "componentType": "Link",
+              "attrs": {
+                "to": "/"
+              },
+              "style": {
+                "className": "flex items-center gap-2 px-6 py-4 flex-1"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "children": ["Create Tour"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "svg",
+                  "attrs": {
+                    "viewBox": "0 0 16 16"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00009",
+      "type": "interface",
+      "name": "VenueList",
+      "description": "Compact list of selected venues with dates and locations",
+      "path": "DEMO UI/client/components/VenueList.tsx",
+      "uidl_conceptual": {
+        "type": "List",
+        "items": [
+          {
+            "type": "VenueListItem",
+            "fields": {
+              "date": "02 / 12",
+              "name": "San Diego Symphony",
+              "address": "Pioneertown, CA US"
+            }
+          },
+          {
+            "type": "VenueListItem",
+            "fields": {
+              "date": "03 / 12",
+              "name": "San Diego Symphony",
+              "address": "Pioneertown, CA US"
+            }
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "VenueList",
+        "node": {
+          "type": "element",
+          "elementType": "list",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "listItem",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "date",
+                  "children": ["$venue.date"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "venueName",
+                  "children": ["$venue.name"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "address",
+                  "children": ["$venue.address"]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "VenueList",
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "flex flex-col items-start w-full max-w-[240px]"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "div",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "style": {
+                    "className": "text-xs font-semibold leading-[150%] text-[#9A9FA5]"
+                  },
+                  "children": ["$venue.date"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "style": {
+                    "className": "text-[15px] font-bold leading-6 tracking-[-0.15px] text-[#FCFCFC]"
+                  },
+                  "children": ["$venue.name"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "style": {
+                    "className": "text-xs font-normal leading-[150%] text-[#6F767E]"
+                  },
+                  "children": ["$venue.address"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00010",
+      "type": "interface",
+      "name": "CalendarPicker",
+      "description": "Interactive calendar for selecting tour dates",
+      "path": "DEMO UI/client/components/Calendar.tsx",
+      "uidl_conceptual": {
+        "type": "DatePicker",
+        "children": [
+          {
+            "type": "CalendarHeader",
+            "children": [
+              {
+                "type": "Button",
+                "label": "Previous Month",
+                "intent": "navigate_to_previous_month"
+              },
+              {
+                "type": "MonthYearDisplay",
+                "format": "MMMM YYYY"
+              },
+              {
+                "type": "Button",
+                "label": "Next Month",
+                "intent": "navigate_to_next_month"
+              }
+            ]
+          },
+          {
+            "type": "WeekdayHeader",
+            "days": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+          },
+          {
+            "type": "CalendarGrid",
+            "children": [
+              {
+                "type": "DayCell",
+                "day": "number",
+                "selectable": true,
+                "selected": false,
+                "inRange": false,
+                "intent": "select_date"
+              }
+            ]
+          }
+        ]
+      },
+      "ui_blueprint": {
+        "name": "CalendarPicker",
+        "node": {
+          "type": "element",
+          "elementType": "calendar",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "calendarHeader",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "button",
+                  "events": {
+                    "click": {
+                      "type": "action",
+                      "calls": "handlePrevMonth"
+                    }
+                  }
+                },
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["$monthNames[$currentMonth.getMonth()] $currentMonth.getFullYear()"]
+                },
+                {
+                  "type": "element",
+                  "elementType": "button",
+                  "events": {
+                    "click": {
+                      "type": "action",
+                      "calls": "handleNextMonth"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "weekdayHeader",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "text",
+                  "children": ["Su"]
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "grid",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "button",
+                  "attrs": {
+                    "selected": "$isSelected",
+                    "inRange": "$isInRange"
+                  },
+                  "events": {
+                    "click": {
+                      "type": "action",
+                      "calls": "handleDateClick",
+                      "args": ["$day"]
+                    }
+                  },
+                  "children": ["$day"]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "Calendar",
+        "stateDefinitions": {
+          "currentMonth": {
+            "type": "Date",
+            "defaultValue": "new Date(2025, 11)"
+          },
+          "selectedDate": {
+            "type": "number",
+            "defaultValue": 7
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "flex flex-col items-center gap-10 w-full h-full p-6"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "handlePrevMonth"
+                  }
+                ]
+              },
+              "children": [
+                {
+                  "type": "component",
+                  "componentType": "ChevronLeft"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "handleDateClick",
+                    "args": ["$day"]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ni00011",
+      "type": "interface",
+      "name": "RiderCategorySidebar",
+      "description": "Collapsible navigation sidebar for rider requirement categories",
+      "path": "DEMO UI/client/components/RiderSidebar.tsx",
+      "uidl_conceptual": {
+        "type": "NavigationSidebar",
+        "sections": [
+          {
+            "id": "equipment",
+            "label": "Equipment",
+            "expandable": true,
+            "subsections": ["Audio", "Backline", "Lighting", "Staging", "Video", "Other"],
+            "intent": "navigate_to_equipment_section"
+          },
+          {
+            "id": "facilities",
+            "label": "Facilities",
+            "expandable": true,
+            "intent": "navigate_to_facilities_section"
+          },
+          {
+            "id": "information",
+            "label": "Information",
+            "expandable": true,
+            "intent": "navigate_to_information_section"
+          },
+          {
+            "id": "parking",
+            "label": "Parking",
+            "expandable": true,
+            "intent": "navigate_to_parking_section"
+          },
+          {
+            "id": "local-crew",
+            "label": "Local Crew",
+            "expandable": true,
+            "intent": "navigate_to_local_crew_section"
+          },
+          {
+            "id": "logistics",
+            "label": "Logistics",
+            "expandable": true,
+            "intent": "navigate_to_logistics_section"
+          },
+          {
+            "id": "production",
+            "label": "Production",
+            "expandable": true,
+            "intent": "navigate_to_production_section"
+          }
+        ],
+        "currentSection": "equipment"
+      },
+      "ui_blueprint": {
+        "name": "RiderCategorySidebar",
+        "node": {
+          "type": "element",
+          "elementType": "nav",
+          "children": [
+            {
+              "type": "element",
+              "elementType": "navSection",
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "button",
+                  "attrs": {
+                    "expanded": "$expandedSection === section.id"
+                  },
+                  "events": {
+                    "click": {
+                      "type": "stateChange",
+                      "modifies": "$expandedSection",
+                      "toggles": true
+                    }
+                  },
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "expansionIndicator"
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "text",
+                      "children": ["$section.label"]
+                    },
+                    {
+                      "type": "element",
+                      "elementType": "icon",
+                      "attrs": {
+                        "type": "$expandedSection === section.id ? 'ChevronUp' : 'ChevronDown'"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "elementType": "subsectionList",
+                  "visible": "$expandedSection === section.id && section.subsections",
+                  "children": [
+                    {
+                      "type": "element",
+                      "elementType": "subsectionItem",
+                      "children": [
+                        {
+                          "type": "element",
+                          "elementType": "text",
+                          "children": ["$subsection"]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ui_physical": {
+        "name": "RiderSidebar",
+        "stateDefinitions": {
+          "expandedSection": {
+            "type": "string",
+            "defaultValue": "equipment"
+          }
+        },
+        "node": {
+          "type": "element",
+          "elementType": "div",
+          "style": {
+            "className": "flex flex-col items-start w-60"
+          },
+          "children": [
+            {
+              "type": "element",
+              "elementType": "button",
+              "events": {
+                "onClick": [
+                  {
+                    "type": "propCall",
+                    "calls": "setExpandedSection",
+                    "args": ["$expandedSection === section.id ? '' : section.id"]
+                  }
+                ]
+              },
+              "style": {
+                "className": "$expandedSection === section.id ? 'bg-white/80 border border-white' : ''"
+              },
+              "children": [
+                {
+                  "type": "element",
+                  "elementType": "span",
+                  "children": ["$section.label"]
+                },
+                {
+                  "type": "component",
+                  "componentType": "$expandedSection === section.id ? 'ChevronUp' : 'ChevronDown'"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "eii00001",
+      "type": "navigation",
+      "source": "ni00001",
+      "target": "ni00002",
+      "label": "route_to_home",
+      "details": "React Router route definition: path='/' renders CreateTourPage (Index component)"
+    },
+    {
+      "id": "eii00002",
+      "type": "navigation",
+      "source": "ni00001",
+      "target": "ni00003",
+      "label": "route_to_select_venues",
+      "details": "React Router route definition: path='/select-venues' renders SelectVenuesPage"
+    },
+    {
+      "id": "eii00003",
+      "type": "navigation",
+      "source": "ni00001",
+      "target": "ni00004",
+      "label": "route_to_rider_validation",
+      "details": "React Router route definition: path='/rider-validation' renders RiderValidationPage"
+    },
+    {
+      "id": "eii00004",
+      "type": "navigation",
+      "source": "ni00001",
+      "target": "ni00005",
+      "label": "route_to_tour_review",
+      "details": "React Router route definition: path='/tour-review' renders TourReviewPage"
+    },
+    {
+      "id": "eii00005",
+      "type": "navigation",
+      "source": "ni00001",
+      "target": "ni00006",
+      "label": "route_to_not_found",
+      "details": "React Router catch-all route: path='*' renders NotFoundPage for undefined routes"
+    },
+    {
+      "id": "eii00006",
+      "type": "navigation",
+      "source": "ni00002",
+      "target": "ni00003",
+      "label": "wizard_step_continue",
+      "details": "Continue button triggers navigate('/select-venues') via handleContinue function"
+    },
+    {
+      "id": "eii00007",
+      "type": "navigation",
+      "source": "ni00003",
+      "target": "ni00004",
+      "label": "wizard_step_continue",
+      "details": "Continue button triggers navigate('/rider-validation') via handleContinue function"
+    },
+    {
+      "id": "eii00008",
+      "type": "navigation",
+      "source": "ni00004",
+      "target": "ni00005",
+      "label": "wizard_step_continue",
+      "details": "Continue button triggers navigate('/tour-review') via handleContinue function"
+    },
+    {
+      "id": "eii00009",
+      "type": "navigation",
+      "source": "ni00006",
+      "target": "ni00002",
+      "label": "return_to_home",
+      "details": "Link element with href='/' allows users to return to home page from 404 error"
+    },
+    {
+      "id": "eii00010",
+      "type": "navigation",
+      "source": "ni00008",
+      "target": "ni00002",
+      "label": "wizard_step_1",
+      "details": "WizardSteps Link component for step 1 navigates to path='/' (Create Tour)"
+    },
+    {
+      "id": "eii00011",
+      "type": "navigation",
+      "source": "ni00008",
+      "target": "ni00003",
+      "label": "wizard_step_2",
+      "details": "WizardSteps Link component for step 2 navigates to path='/select-venues'"
+    },
+    {
+      "id": "eii00012",
+      "type": "navigation",
+      "source": "ni00008",
+      "target": "ni00004",
+      "label": "wizard_step_3",
+      "details": "WizardSteps Link component for step 3 navigates to path='/rider-validation'"
+    },
+    {
+      "id": "eii00013",
+      "type": "navigation",
+      "source": "ni00008",
+      "target": "ni00005",
+      "label": "wizard_step_4",
+      "details": "WizardSteps Link component for step 4 navigates to path='/tour-review'"
+    },
+    {
+      "id": "eii00014",
+      "type": "composition",
+      "source": "ni00002",
+      "target": "ni00007",
+      "label": "uses_header",
+      "details": "CreateTourPage imports and renders Header component at the top of the page"
+    },
+    {
+      "id": "eii00015",
+      "type": "composition",
+      "source": "ni00002",
+      "target": "ni00008",
+      "label": "uses_wizard_navigation",
+      "details": "CreateTourPage imports and renders WizardSteps component to show wizard progress"
+    },
+    {
+      "id": "eii00016",
+      "type": "composition",
+      "source": "ni00003",
+      "target": "ni00007",
+      "label": "uses_header",
+      "details": "SelectVenuesPage imports and renders Header component at the top of the page"
+    },
+    {
+      "id": "eii00017",
+      "type": "composition",
+      "source": "ni00003",
+      "target": "ni00008",
+      "label": "uses_wizard_navigation",
+      "details": "SelectVenuesPage imports and renders WizardSteps component to show wizard progress"
+    },
+    {
+      "id": "eii00018",
+      "type": "composition",
+      "source": "ni00003",
+      "target": "ni00010",
+      "label": "uses_calendar",
+      "details": "SelectVenuesPage imports and renders Calendar component for date selection"
+    },
+    {
+      "id": "eii00019",
+      "type": "composition",
+      "source": "ni00003",
+      "target": "ni00009",
+      "label": "uses_venue_list",
+      "details": "SelectVenuesPage imports and renders VenueList component to display selected venues"
+    },
+    {
+      "id": "eii00020",
+      "type": "composition",
+      "source": "ni00004",
+      "target": "ni00007",
+      "label": "uses_header",
+      "details": "RiderValidationPage imports and renders Header component at the top of the page"
+    },
+    {
+      "id": "eii00021",
+      "type": "composition",
+      "source": "ni00004",
+      "target": "ni00008",
+      "label": "uses_wizard_navigation",
+      "details": "RiderValidationPage imports and renders WizardSteps component to show wizard progress"
+    },
+    {
+      "id": "eii00022",
+      "type": "composition",
+      "source": "ni00004",
+      "target": "ni00011",
+      "label": "uses_rider_sidebar",
+      "details": "RiderValidationPage imports and renders RiderSidebar component for category navigation"
+    },
+    {
+      "id": "eii00023",
+      "type": "composition",
+      "source": "ni00005",
+      "target": "ni00007",
+      "label": "uses_header",
+      "details": "TourReviewPage imports and renders Header component at the top of the page"
+    },
+    {
+      "id": "eii00024",
+      "type": "composition",
+      "source": "ni00005",
+      "target": "ni00008",
+      "label": "uses_wizard_navigation",
+      "details": "TourReviewPage imports and renders WizardSteps component to show wizard progress"
+    }
+  ]
+}
